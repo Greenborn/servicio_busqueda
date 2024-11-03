@@ -1,0 +1,31 @@
+{
+    "name": "servicio_busqueda",
+    "version": "0.1.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon server.js --ignore ./db --ignore ./node_modules"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Greenborn/servicio_busqueda.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Greenborn/servicio_busqueda/issues"
+    },
+    "homepage": "https://github.com/Greenborn/servicio_busqueda#readme",
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.1",
+        "express": "^4.18.1",
+        "express-session": "^1.17.3",
+        "express-ws": "^5.0.2",
+        "knex": "^2.3.0",
+        "mysql2": "^3.11.3",
+        "uuid": "^10.0.0"
+    }
+}
