@@ -68,8 +68,8 @@ async function setupTypesenseCollection() {
             { 'name': 'id', 'type': 'string' },
             { 'name': 'texto', 'type': 'string' },
             { 'name': 'texto_lower', 'type': 'string', 'facet': false }
-        ],
-        'default_sorting_field': 'id'
+        ]
+        // No se define default_sorting_field
     };
 
     try {
