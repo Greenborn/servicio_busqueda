@@ -35,14 +35,72 @@ table_text_f=texto
 table_id_f=id
 ```
 
+
 ## 4. Estructura y funcionamiento
 
 - El servidor está implementado en `server.js` usando Express.
 - Se conecta a una base de datos MySQL usando Knex.
-- Expone un endpoint `/autocomplete` que responde a peticiones GET.
+- Expone dos endpoints principales:
+	- `/autocomplete`: sugiere posibles términos de búsqueda (autocompletado).
+	- `/search`: devuelve todos los registros que coinciden con el término de búsqueda.
 - Al iniciar, el servidor consulta la tabla configurada y genera una estructura en memoria para autocompletado.
-- El endpoint `/autocomplete` espera un parámetro de consulta `q` y responde con sugerencias (actualmente vacío, requiere implementación).
 
+### Endpoint de sugerencias de autocompletado
+
+- **Ruta:** `/autocomplete`
+- **Método:** GET
+- **Parámetros:**
+	- `q` (query param, obligatorio): término parcial para sugerencias (urlencoded)
+
+#### Ejemplo de request
+
+```
+GET http://localhost:3000/autocomplete?q=ejem
+```
+
+#### Ejemplo de response
+
+```json
+{
+	"items": [
+		"ejemplo",
+		"ejemplo2"
+	]
+}
+```
+
+- El endpoint retorna un array de strings con posibles términos de búsqueda que contienen el texto ingresado y que entregarían al menos un resultado.
+- Si no hay coincidencias, retorna un array vacío en `items`.
+
+### Endpoint de búsqueda
+
+- **Ruta:** `/search`
+- **Método:** GET
+- **Parámetros:**
+	- `q` (query param, obligatorio): término de búsqueda (urlencoded)
+
+#### Ejemplo de request
+
+```
+GET http://localhost:3000/search?q=ejemplo
+```
+
+#### Ejemplo de response
+
+```json
+{
+	"items": [
+		{
+			"id": 1,
+			"texto": "ejemplo"
+		},
+		...
+	]
+}
+```
+
+- El endpoint retorna un array de objetos que contienen los resultados coincidentes con el término de búsqueda.
+- Si no hay coincidencias, retorna un array vacío en `items`.
 ## 5. Ejecución del servidor
 
 Para desarrollo (con recarga automática usando nodemon):
