@@ -2,6 +2,8 @@
 
 Este documento describe los pasos y requisitos técnicos para replicar el proyecto `servicio_busqueda`.
 
+> **✅ IMPLEMENTACIÓN COMPLETADA:** Todas las funcionalidades descritas en este documento han sido implementadas. Consulta el archivo `README.md` para instrucciones detalladas de uso.
+
 ## 1. Requisitos del entorno
 
 - Node.js >= 14.x
@@ -36,14 +38,29 @@ table_id_f=id
 ```
 
 
+
 ## 4. Estructura y funcionamiento
 
-- El servidor está implementado en `server.js` usando Express.
-- Se conecta a una base de datos MySQL usando Knex.
-- Expone dos endpoints principales:
-	- `/autocomplete`: sugiere posibles términos de búsqueda (autocompletado).
-	- `/search`: devuelve todos los registros que coinciden con el término de búsqueda.
-- Al iniciar, el servidor consulta la tabla configurada y genera una estructura en memoria para autocompletado.
+### Uso de Typesense
+
+El sistema utiliza [Typesense](https://typesense.org/) como motor de búsqueda full-text para mejorar la velocidad y relevancia de las búsquedas y sugerencias de autocompletado. Typesense se integra como un servicio adicional, indexando los datos de la base de datos y permitiendo consultas rápidas y tolerantes a errores tipográficos.
+
+- **Ventajas:**
+	- Búsqueda en tiempo real y autocompletado eficiente.
+	- Soporte para tolerancia a errores (fuzzy search).
+	- Fácil integración con Node.js mediante SDK oficial.
+- **Consideraciones:**
+	- Es necesario tener un servidor Typesense corriendo y accesible desde el backend.
+	- Los datos deben sincronizarse entre MySQL y Typesense (por ejemplo, al crear o actualizar registros).
+
+La lógica de los endpoints `/autocomplete` y `/search` puede consultar primero Typesense para obtener resultados relevantes y, si es necesario, complementar con la base de datos MySQL.
+
+El servidor está implementado en `server.js` usando Express.
+Se conecta a una base de datos MySQL usando Knex y a un clúster Typesense para búsquedas rápidas.
+Expone dos endpoints principales:
+	- `/autocomplete`: sugiere posibles términos de búsqueda (autocompletado) usando Typesense.
+	- `/search`: devuelve todos los registros que coinciden con el término de búsqueda, priorizando resultados de Typesense.
+Al iniciar, el servidor puede sincronizar los datos de la tabla configurada con Typesense y generar una estructura en memoria para autocompletado si es necesario.
 
 ### Endpoint de sugerencias de autocompletado
 
